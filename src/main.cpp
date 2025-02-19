@@ -10,7 +10,7 @@ int main(int argc, char* argv[]){
     SDL_Init(SDL_INIT_EVERYTHING);
     bool running = true;
     SDL_Window* window;
-    SDL_Rect source{50,SCREEN_HEIGHT-250,70,70};
+    SDL_Rect source{50,SCREEN_HEIGHT-800,70,70};
     // SDL_Rect dest{10,10,Window_H-20,Window_W-20};
     if (!(IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG)) {
         cout << "Lỗi khởi tạo SDL2_image: " << IMG_GetError() << endl;
@@ -35,9 +35,24 @@ int main(int argc, char* argv[]){
     
     SDL_Event event;
     // Vòng lặp game
-    float speed;
-    
+    Uint32 lastTime = SDL_GetTicks();
+    float speed = 5.0f;
+    float jumpVelocity = -30.0f; 
+    float gravity = 2.0f;
+    float ground = SCREEN_HEIGHT-300;
+    float velocityY = 10.0f;
+    bool isJumping = false;
     while (running) {
+        Uint32 currentTime = SDL_GetTicks();
+		float deltaTime = (currentTime - lastTime) / 1000.0f;
+        velocityY+=gravity*deltaTime;
+        source.x += speed * deltaTime;
+        source.y += velocityY * deltaTime;
+        if(source.y >= ground){
+            source.y = ground;
+            velocityY = 0;
+            isJumping = false;
+        }
         while (SDL_PollEvent(&event)) {
             if (event.type == SDL_QUIT) {
                 running = false; // Thoát game khi nhấn "X"
@@ -47,15 +62,10 @@ int main(int argc, char* argv[]){
                 switch(event.key.keysym.sym){
                     case SDLK_UP:
                     source.y-=5;
-                    break;
-                    case SDLK_DOWN:
-                    source.y+=5;
-                    break;
-                    case SDLK_LEFT:
-                    source.x-=5;
-                    break;
-                    case SDLK_RIGHT:
-                    source.x+=5;
+                    if (!isJumping) {  // Chỉ nhảy nếu đang trên mặt đất
+                        velocityY = jumpVelocity;
+                        isJumping = true;
+                    }
                     break;
                 }
             }

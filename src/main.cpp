@@ -24,7 +24,7 @@ int main(int argc, char* argv[]){
     cout << "Lỗi SDL_image: " << IMG_GetError() << endl;
     return -1;
 }
-// SDL_Rect rect = {50, 50, 100, 100};  // Vị trí và kích thước của hình chữ nhật
+// SDL_Rect rect = {50, 50, 100, 100}; 
 
 
 // cout << 5 << endl;
@@ -55,14 +55,14 @@ int main(int argc, char* argv[]){
         }
         while (SDL_PollEvent(&event)) {
             if (event.type == SDL_QUIT) {
-                running = false; // Thoát game khi nhấn "X"
+                running = false; 
                 return 0;
             }
             if(event.type == SDL_KEYDOWN){
                 switch(event.key.keysym.sym){
                     case SDLK_UP:
                     source.y-=5;
-                    if (!isJumping) {  // Chỉ nhảy nếu đang trên mặt đất
+                    if (!isJumping) {  
                         velocityY = jumpVelocity;
                         isJumping = true;
                     }
@@ -73,7 +73,7 @@ int main(int argc, char* argv[]){
         
         SDL_RenderClear(renderer);
     
-        // Vẽ ảnh nền full màn hình
+        
         SDL_Rect bgRect = {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT};
       
         SDL_RenderCopy(renderer, background, NULL, &bgRect);

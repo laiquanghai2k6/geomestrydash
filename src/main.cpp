@@ -14,6 +14,14 @@ void squareWith(vector<SDL_Rect> &squares,int x,int n){
     }
     
 }
+void squareNgang(vector<SDL_Rect> &squares,int x,int n,int w){
+    for(int i = 0 ; i < w ;i++){
+        for(int j = 0 ; j < n;j++){
+            squares.push_back({x+70*i,(int)SCREEN_HEIGHT - 210-j*70,100,100});
+        }
+    }
+    
+}
 void spikeWith(vector<SDL_Rect> &spikes,int x,int n){
     for(int i = 0 ; i < n;i++){
         
@@ -24,6 +32,14 @@ void spikeWith(vector<SDL_Rect> &spikes,int x,int n){
          spikes.push_back({x+i*60 ,(int)SCREEN_HEIGHT - 210, 90, 90});
 
         }
+
+    }
+}
+void spikeNgang(vector<SDL_Rect> &spikes,int x,int n){
+    for(int i = 0 ; i < n;i++){
+    spikes.push_back({x+i*60 ,(int)SCREEN_HEIGHT - 210, 90, 90});
+
+        
 
     }
 }
@@ -62,8 +78,12 @@ int main(int argc, char *argv[])
     float angle = 0.0f;
     Uint8 playerAlpha = 255;
     bool isDead = false;
+    bool onBlock = false;
     SDL_Texture *thornTexture = IMG_LoadTexture(renderer, "C:/Users/ADMIN/Desktop/games/src/thorn1.png");
     SDL_Texture *squareTexture = IMG_LoadTexture(renderer, "C:/Users/ADMIN/Desktop/games/src/square1.png");
+    SDL_Texture *portalTexture = IMG_LoadTexture(renderer, "C:/Users/ADMIN/Desktop/games/src/portal.png");
+
+
     vector<SDL_Rect> spikes;
     
     
@@ -80,11 +100,27 @@ int main(int argc, char *argv[])
         squareWith(squares,600 + 1 * 800,2);
         squareWith(squares,600 + 1 * 800+150,1);
         squareWith(squares,600 + 1 * 800+150*2,3);
+        squareWith(squares,2500+150*1,1);
+        squareWith(squares,2500+150*2,3);
+        squareWith(squares,2500+150*3,5);
+        squareWith(squares,2500+150*4,7);
+        squareWith(squares,2500+150*5,7);
+        squareWith(squares,2500+150*6,5);
+        squareWith(squares,2500+150*7,3);
+        squareWith(squares,2500+150*8,1);
+        squareNgang(squares,2500+150*9,2,10);
+        spikeNgang(spikes,4000,100);
+        
+
+        
+
+        
      
 
 
     // }
-
+    bool cheat = false;
+    bool isFly = false;
     while (running)
     {
         Uint32 currentTime = SDL_GetTicks();
@@ -93,13 +129,17 @@ int main(int argc, char *argv[])
         if (deltaTime >= 4)
             deltaTime = 4;
         int bgX = (int)(-camera) % SCREEN_WIDTH;
-        // cout << source.y + source.h << endl;
-        // cout << source.x << endl;
+        if(isFly) angle = 0;
+       if(source.y <=0 && isFly) source.y=0;
+        
         if (!isDead)
         {
-            velocityY += gravity * deltaTime;
-            const float MAX_FALL_SPEED = 10.0f;
 
+            velocityY += gravity * deltaTime;
+            float MAX_FALL_SPEED = 10.0f;
+            if(isFly ){
+                MAX_FALL_SPEED = 3.0f;
+            }
             if (velocityY > MAX_FALL_SPEED)
             {
                 velocityY = MAX_FALL_SPEED;
@@ -113,14 +153,14 @@ int main(int argc, char *argv[])
             {
                 source.x += 7;
             }
-            if (velocityY * deltaTime <= 10)
+            if (velocityY * deltaTime <= MAX_FALL_SPEED)
             {
 
                 source.y += velocityY * deltaTime;
             }
             else
             {
-                source.y += 10;
+                source.y += MAX_FALL_SPEED;
             }
 
             if (source.y >= ground)
@@ -130,15 +170,17 @@ int main(int argc, char *argv[])
                 angle = 0.0f;
                 // lastTime = currentTime-500;
                 isJumping = false;
+                
             }
             if (source.x > cameraCheckpoint)
             {
                 camera = source.x - cameraCheckpoint;
             }
-            if (isJumping)
+            if (isJumping && !isFly)
             {
                 angle += 12.0f;
             }
+            SDL_Rect portal = {4700-camera,200,103,138};
             SDL_Rect playerRects = {(int)(source.x - camera), source.y, source.w-20, source.h - 30};
             for (const auto &spike : spikes)
             {
@@ -151,38 +193,51 @@ int main(int argc, char *argv[])
             }
             for (const auto &square : squares)
             {
-                SDL_Rect squareRect = {square.x - (int)camera, square.y, square.w, square.h+10};
+                SDL_Rect squareRect = {square.x - (int)camera, square.y, square.w, square.h};
 
                 if (SDL_HasIntersection(&playerRects, &squareRect))
                 {
                     
-                    if(source.y <=square.y+30 && source.x+60 <= square.x+20 ){
+                    if(source.y >=square.y-30 && source.x+60 <= square.x+20 ){
                         isDead= true;
-                        cout << source.y <<" "<<square.y+30 <<" " <<source.x <<" "<<square.x+20 << endl;
+                        cout << source.y <<" "<<square.y <<" " <<source.x <<" "<<square.x+20 << endl;
                         speed = 0;
                         
                     }
-                    else if (source.y + source.h-60  <= square.y + 10) 
+                    else if (source.y + source.h-30  <= square.y + 10) 
                     {
+                        isJumping = false;
                         source.y = square.y - source.h + 25;
                         velocityY = 0;
-                        isJumping = false;
+                        onBlock = true;
                         angle = 0;
                     }
                     
                     
                 }
+            
+
+                
+            }
+            if (SDL_HasIntersection(&playerRects, &portal))
+            {
+                objectTexture = IMG_LoadTexture(renderer, "C:/Users/ADMIN/Desktop/games/src/fly.png");
+                //  isDead = true;
+                 isFly = true;
             }
         }
         else
         {
+            objectTexture = IMG_LoadTexture(renderer, "C:/Users/ADMIN/Desktop/games/src/gameObject.png");
             if (playerAlpha > 0)
             {
         
             }
+            
             else
             {
                 running = false;
+                
             }
         }
 
@@ -199,14 +254,17 @@ int main(int argc, char *argv[])
                 {
                 case SDLK_UP:
 
-                    if (!isJumping)
+                    if (!isJumping && angle == 0 && !isFly)
                     {
                         velocityY = jumpVelocity;
                         isJumping = true;
                     }
+                    if(isFly){
+                        source.y -=50;
+                    }
+                    
                     break;
-                case SDLK_r:
-                    if(isDead){
+                case SDLK_r:                   
                         lastTime = SDL_GetTicks();
                         speed = 7.0f;
                         jumpVelocity = -25.0f;
@@ -222,8 +280,8 @@ int main(int argc, char *argv[])
                         isDead = false;
                         source.x = 50;
                         source.y = SCREEN_HEIGHT - 210;
-                    }
-                    
+                        break;
+                  
                 }
             }
             // if (event.type == SDL_MOUSEMOTION) {
@@ -239,9 +297,13 @@ int main(int argc, char *argv[])
         // SDL_Rect bgRect = {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT};
         SDL_Rect bgRect = {bgX, 0, SCREEN_WIDTH, SCREEN_HEIGHT};
         SDL_Rect bgRect2 = {bgX + SCREEN_WIDTH, 0, SCREEN_WIDTH, SCREEN_HEIGHT};
+        SDL_Rect portal = {4700-camera,200,103,138};
+        
+
         SDL_RenderCopy(renderer, background, NULL, &bgRect);
         SDL_RenderCopy(renderer, background, NULL, &bgRect2);
 
+        SDL_RenderCopy(renderer, portalTexture, NULL, &portal);
         SDL_Rect playerRect = {(int)(source.x - camera), source.y, source.w, source.h};
         SDL_Point center = {source.w / 2, source.h / 2};
         SDL_RenderCopyEx(renderer, objectTexture, NULL, &playerRect, angle, &center, SDL_FLIP_NONE);

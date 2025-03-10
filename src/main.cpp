@@ -92,6 +92,8 @@ int main(int argc, char *argv[])
         // spikes.push_back({500 + 1 * 1500+60, (int)ground, 90, 90});
         spikeWith(spikes,500 + 0 * 1500,1);
         spikeWith(spikes,500 + 1*1500,2);
+        spikeWith(spikes,500 + 1*1500,3;
+
 
         
 

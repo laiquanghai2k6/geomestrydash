@@ -1,0 +1,22 @@
+[33m6e0c631[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m HEAD@{0}: commit: test fly
+[33m02f40f2[m[33m ([m[1;31morigin/fly[m[33m, [m[1;32mfly[m[33m)[m HEAD@{1}: checkout: moving from main to main
+[33m02f40f2[m[33m ([m[1;31morigin/fly[m[33m, [m[1;32mfly[m[33m)[m HEAD@{2}: checkout: moving from fly to main
+[33m02f40f2[m[33m ([m[1;31morigin/fly[m[33m, [m[1;32mfly[m[33m)[m HEAD@{3}: checkout: moving from main to fly
+[33m02f40f2[m[33m ([m[1;31morigin/fly[m[33m, [m[1;32mfly[m[33m)[m HEAD@{4}: reset: moving to HEAD
+[33m02f40f2[m[33m ([m[1;31morigin/fly[m[33m, [m[1;32mfly[m[33m)[m HEAD@{5}: rebase (finish): returning to refs/heads/main
+[33m02f40f2[m[33m ([m[1;31morigin/fly[m[33m, [m[1;32mfly[m[33m)[m HEAD@{6}: rebase (finish): refs/heads/main onto 0b7abf0064ebb0325743ef7a9de7db94a712403d
+[33m02f40f2[m[33m ([m[1;31morigin/fly[m[33m, [m[1;32mfly[m[33m)[m HEAD@{7}: reset: moving to HEAD
+[33m02f40f2[m[33m ([m[1;31morigin/fly[m[33m, [m[1;32mfly[m[33m)[m HEAD@{8}: reset: moving to HEAD
+[33m02f40f2[m[33m ([m[1;31morigin/fly[m[33m, [m[1;32mfly[m[33m)[m HEAD@{9}: checkout: moving from main to main
+[33m02f40f2[m[33m ([m[1;31morigin/fly[m[33m, [m[1;32mfly[m[33m)[m HEAD@{10}: checkout: moving from d184ba26c2227b77b2403b009949ca0fee25b998 to main
+[33md184ba2[m HEAD@{11}: commit: fly update
+[33m80ab980[m HEAD@{12}: commit: update flying
+[33m057e4e8[m HEAD@{13}: commit: spike and square
+[33m0b7abf0[m HEAD@{14}: pull origin main --rebase (start): checkout 0b7abf0064ebb0325743ef7a9de7db94a712403d
+[33m02f40f2[m[33m ([m[1;31morigin/fly[m[33m, [m[1;32mfly[m[33m)[m HEAD@{15}: commit: spike and square
+[33mbbd535f[m HEAD@{16}: commit: thorn
+[33m1a9fb35[m HEAD@{17}: commit: camera and background logic
+[33m3eba9ed[m HEAD@{18}: commit: gravity and jump logic
+[33m8b487e7[m HEAD@{19}: commit: background and objectTexture
+[33m7f89729[m HEAD@{20}: Branch: renamed refs/heads/master to refs/heads/main
+[33m7f89729[m HEAD@{22}: commit (initial): first init
